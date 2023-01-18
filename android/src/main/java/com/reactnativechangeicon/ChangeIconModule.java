@@ -79,7 +79,7 @@ public class ChangeIconModule extends ReactContextBaseJavaModule implements Appl
             );
             promise.resolve(enableIcon);
         } catch (Exception e) {
-            promise.reject("ICON_INVALID");
+            promise.reject(e);
             return;
         }
         this.classesToKill.add(this.componentClass);
@@ -92,6 +92,7 @@ public class ChangeIconModule extends ReactContextBaseJavaModule implements Appl
         if (!iconChanged) return;
         final Activity activity = getCurrentActivity();
         if (activity == null) return;
+        classesToKill.remove(componentClass);
         classesToKill.forEach((cls) -> activity.getPackageManager().setComponentEnabledSetting(
             new ComponentName(this.packageName, cls),
             PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
