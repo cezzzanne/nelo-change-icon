@@ -21,6 +21,7 @@ import java.util.List;
 @ReactModule(name = ChangeIconModule.NAME)
 public class ChangeIconModule extends ReactContextBaseJavaModule implements Application.ActivityLifecycleCallbacks {
     public static final String NAME = "ChangeIcon";
+    public static final String MAIN_ACTIVITY_NAME = "co.nelo.nelo.MainActivity";
     private final String packageName;
     private List<String> classesToKill = new ArrayList<>();
     private Boolean iconChanged = false;
@@ -82,7 +83,10 @@ public class ChangeIconModule extends ReactContextBaseJavaModule implements Appl
             promise.reject(e);
             return;
         }
-        this.classesToKill.add(this.componentClass);
+
+        if (!this.componentClass.equals(MAIN_ACTIVITY_NAME)) {
+            this.classesToKill.add(this.componentClass);
+        }
         this.componentClass = activeClass;
         activity.getApplication().registerActivityLifecycleCallbacks(this);
         iconChanged = true;
